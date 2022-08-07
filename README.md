@@ -11,11 +11,11 @@ python3 src/main.py
 
 ``` cmd
 python -m venv env
-./env/bin/activate.bat
+./env/Scripts/activate.bat
 python -m pip install --upgrade pip
 python -m pip install --upgrade build
 python -m pip install -r requirements.txt 
 python -m pip install .
-export DB_CONNECTION="{your database connection strin in sqlalchemy format}"
+setx DB_CONNECTION "{your database connection strin in sqlalchemy format}"
 python src/main.py
 ```
