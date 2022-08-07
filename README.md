@@ -6,7 +6,7 @@ python3 -m pip install --upgrade build
 python3 -m pip install -r requirements.txt 
 python3 -m pip install .
 export DB_CONNECTION="{your database connection strin in sqlalchemy format}"
-python3 src/main.py
+python3 scripts/run_etl.py
 ```
 
 ``` cmd
@@ -17,5 +17,5 @@ python -m pip install --upgrade build
 python -m pip install -r requirements.txt 
 python -m pip install .
 export DB_CONNECTION="{your database connection strin in sqlalchemy format}"
-python src/main.py
+python scripts/run_etl.py
 ```
