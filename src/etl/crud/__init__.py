@@ -1,6 +1,8 @@
+from toolz.itertoolz import partition_all
 from sqlalchemy.future.engine import Engine
 from sqlmodel import SQLModel, Session, create_engine, select
 from typing import Iterable, TypeVar
+from tqdm import tqdm
 
 # SQLModelType = TypeVar('SQLModel', bound=SQLModel)
 
@@ -9,13 +11,14 @@ class CRUD:
         self.engine = engine
         self.table = table
     
-    def create(self, rows: Iterable[SQLModel]) -> None:
+    def create(self, rows: Iterable[SQLModel], batch_size: int=1_000) -> None:
         assert all(isinstance(row, self.table) for row in rows)
 
-        with Session(self.engine) as session:
-            for row in rows:
+        for partition in tqdm(list(partition_all(batch_size, rows))):
+            with Session(self.engine) as session:
                 try:
-                    session.add(row)
+                    for row in partition:
+                        session.add(row)
                     session.commit()
                 except:
                     session.rollback()
@@ -31,12 +34,14 @@ class CRUD:
     def update(self) -> None:
         raise NotImplementedError
 
-    def delete(self, filters: list=None) -> None:
+    def delete(self, filters: list=None, batch_size: int=1_000) -> None:
         result = self.read(filters)
-        with Session(self.engine) as session:
-            for row in result:
+
+        for partition in tqdm(list(partition_all(batch_size, result))):
+            with Session(self.engine) as session:
                 try:
-                    session.delete(row)
+                    for row in partition:
+                        session.delete(row)
                     session.commit()
                 except Exception as e:
                     print(e)
