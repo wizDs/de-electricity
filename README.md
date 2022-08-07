@@ -1,3 +1,4 @@
+# bash
 ``` bash
 python3 -m venv env
 source env/bin/Activate
@@ -9,6 +10,8 @@ export DB_CONNECTION="{your database connection strin in sqlalchemy format}"
 python3 src/main.py
 ```
 
+# cmd
+
 ``` cmd
 python -m venv env
 ./env/Scripts/activate.bat
@@ -19,3 +22,6 @@ python -m pip install .
 setx DB_CONNECTION "{your database connection strin in sqlalchemy format}"
 python src/main.py
 ```
+
+- https://hub.docker.com/_/microsoft-mssql-server
+- https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver16&pivots=cs1-bash
