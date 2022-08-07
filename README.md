@@ -6,4 +6,5 @@ python3 -m pip install --upgrade build
 python3 -m pip install -r requirements.txt 
 python3 -m pip install .
 ipython kernel install --user --name=stock-analysis
+export DB_CONNECTION="{your database connection strin in sqlalchemy format}"
 ```
