@@ -1,10 +1,8 @@
 from toolz.itertoolz import partition_all
 from sqlalchemy.future.engine import Engine
-from sqlmodel import SQLModel, Session, create_engine, select
-from typing import Iterable, TypeVar
+from sqlmodel import SQLModel, Session, select
+from typing import Iterable
 from tqdm import tqdm
-
-# SQLModelType = TypeVar('SQLModel', bound=SQLModel)
 
 class CRUD:
     def __init__(self, engine: Engine, table: SQLModel):

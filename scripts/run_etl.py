@@ -21,7 +21,7 @@ if __name__ == '__main__':
         )
         engine = create_engine(os.getenv('DB_CONNECTION'))
         SQLModel.metadata.create_all(engine)
-        crud = CRUD(engine=engineengine, table=SpotPrice)
+        crud = CRUD(engine=engine, table=SpotPrice)
         crud.create(rows)
         
     else:
