@@ -5,15 +5,15 @@ from sqlmodel import create_engine, SQLModel
 from etl.models import SpotPrice
 from etl.crud import CRUD
 
-def get_spotprices(url: str):
+def get_spotprices(url: str) -> list[SpotPrice]:
     response = requests.get(url=url)
     result = response.json()
     records = result.get('records', [])
-    rows = list(SpotPrice(**r) for r in records)
-    return rows
+    rows = (SpotPrice(**r) for r in records)
+    return list(rows)
 
 if __name__ == '__main__':
-    test = True
+    test = False
 
     if not test:
         rows = get_spotprices(

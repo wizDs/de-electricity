@@ -7,7 +7,6 @@ class SpotPrice(SQLModel, table=True):
     ID: Optional[str] = Field(default_factory=uuid.uuid4, primary_key=True, max_length=100)
     HourUTC: datetime
     HourDK: datetime
-    PriceArea: str
-    SpotPriceDKK: float
-    SpotPriceEUR: float
-
+    PriceArea: Optional[str] = Field(max_length=10)
+    SpotPriceDKK: Optional[float]
+    SpotPriceEUR: Optional[float]
