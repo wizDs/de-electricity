@@ -11,8 +11,8 @@ if __name__ == '__main__':
     test = False
     db_connection = os.getenv('DB_CONNECTION')
     endpoint = 'https://api.energidataservice.dk/v2/dataset/PowerSystemRightNow'
-    limit = 100_000
-    periods = pd.date_range(start='2018-01-01', end='2022-07-01', freq='M')
+    limit = 500_000
+    periods = pd.date_range(start='2018-10-01', end='2022-07-01', freq='M')
 
     for period in periods:
         next_period = period + timedelta(days=1)
@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
         if not test:
             rows = extract(
-                url=f'{endpoint}?start={start_date}&end={end_date}&limit={limit}',
+                url=f'{endpoint}?start={start_date}T00:00&end={end_date}T00:00&limit={limit}',
                 model=PowerSystemRightNow
             )
             engine = create_engine(db_connection)
