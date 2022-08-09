@@ -1,2 +1,2 @@
 from .spotprice import SpotPrice
-from .consumption_grid_area import ConsumptionPerGridArea
+from .powersystem import PowerSystemRightNow
