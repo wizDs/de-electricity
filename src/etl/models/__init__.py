@@ -1,2 +1,2 @@
 from .spotprice import SpotPrice
-from .powersystem import PowerSystemRightNow
+from .powersystem import PowerSystem

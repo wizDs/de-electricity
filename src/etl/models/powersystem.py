@@ -3,7 +3,7 @@ from sqlmodel import SQLModel, Field, String
 from datetime import datetime
 from typing import Optional
 
-class PowerSystemRightNow(SQLModel, table=True):
+class PowerSystem(SQLModel, table=True):
     ID: Optional[str] = Field(default_factory=uuid.uuid4, primary_key=True, max_length=100)
     Minutes1UTC: datetime
     Minutes1DK: datetime
