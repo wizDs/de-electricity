@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta
 from sqlmodel import create_engine, SQLModel
 from etl.models import SpotPrice, PowerSystem
 from etl.crud import CRUD
+from etl.date_interval import PeriodFrequency, get_interval
 from etl import extract
 
 def extract_spotprices(start_date: date, end_date: date) -> list[SpotPrice]:
@@ -23,24 +24,7 @@ def extract_powersystem(start_date: date, end_date: date) -> list[PowerSystem]:
         model=PowerSystem
     )
 
-def get_month_interval(period: date|datetime) -> tuple[date, date]:
-    # TODO: Make more generic
-    next_period = period + timedelta(days=1)
-    start_date = date(period.year, period.month, 1)
-    end_date = date(next_period.year, next_period.month, 1)
-    return start_date, end_date
-
-def get_day_interval(period: date|datetime) -> tuple[date, date]:
-    return (period, period+timedelta(day=1))
-
 if __name__ == '__main__':
-    import enum
-    class PeriodFrequency(enum.Enum):
-        QUARTER = '3M'
-        MONTH = 'M'
-        DAY = 'D'
-        HOUR = 'H'
-
     dryrun = False
     start = '2018-10-01'
     end = '2018-12-01'#'2022-08-01'
@@ -56,11 +40,7 @@ if __name__ == '__main__':
 
     for period in periods:
         # Determine period
-        match freq: 
-            case PeriodFrequency.MONTH: start_date, end_date = get_month_interval(period)
-            case PeriodFrequency.DAY: start_date, end_date = get_day_interval(period)
-            case _: raise NotImplementedError(f'{freq.value} not implemented yet')
-
+        start_date, end_date = get_interval(freq, period)
         print(start_date, end_date)
 
         # Extract data from energidataservice
