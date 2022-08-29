@@ -1,6 +1,7 @@
+import etl.models
 from toolz.itertoolz import partition_all
 from sqlalchemy.future.engine import Engine
-from sqlmodel import SQLModel, Session, select
+from sqlmodel import SQLModel, Session
 from typing import Iterable
 from tqdm import tqdm
 
@@ -46,3 +47,12 @@ class CRUD:
                 except Exception as e:
                     print(e)
                     session.rollback()
+
+class CRUDPowerSystem(CRUD): 
+    def __init__(self, engine: Engine):
+        super().__init__(engine=engine, table=etl.models.PowerSystem)
+    
+class CRUDSpotPrice(CRUD): 
+    def __init__(self, engine: Engine):
+        super().__init__(engine=engine, table=etl.models.SpotPrice)
+    

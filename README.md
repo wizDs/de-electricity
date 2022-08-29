@@ -1,3 +1,16 @@
+``` bash
+docker pull mcr.microsoft.com/mssql/server:2022-latest
+docker run --name sql-server --hostname sql-server -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=StrongPassword123" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest 
+docker exec -it sql-server bash
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "StrongPassword123"
+```
+
+``` bash
+CREATE DATABASE Electricity;
+GO;
+```
+
+
 # bash
 ``` bash
 python3 -m pip install --upgrade pip
@@ -7,6 +20,8 @@ python3 -m pip install --editable .
 export DB_CONNECTION="mssql+pyodbc://[username]:[password]@[server]:[port]/[database]?driver=[driver]"
 python3 scripts/run_etl.py
 ```
+
+example on `DB_CONNECTION="mssql+pyodbc://SA:StrongPassword123@localhost:1433/Electricity?driver=SQL+SERVER"`
 
 # cmd
 ``` cmd
