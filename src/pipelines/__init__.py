@@ -14,13 +14,11 @@ class Config(BaseModel):
     path: str
     datatype: str
     
-    @property
     def start_date(self):
         return date(self.year, self.month, 1)
     
-    @property
     def end_date(self):
-        return self.start_date + relativedelta(months=+1) - timedelta(days=1)
+        return self.start_date() + relativedelta(months=+1) - timedelta(days=1)
 
     def get_full_path(self) -> pathlib.Path:
         full_path = f"{self.path}/{self.datatype}/year={self.year}/month={self.month}/"
@@ -49,8 +47,8 @@ class SpotPricePipeline(DataPipeline):
         super().__init__(config)
     
     def run(self):
-        start_date = self.config.start_date
-        end_date = self.config.end_date
+        start_date = self.config.start_date()
+        end_date = self.config.end_date()
         
         # Extract data from energidataservice
         logging.info(f"getting {self.config.datatype}-data for the period {start_date}-{end_date}")
@@ -67,8 +65,8 @@ class PowerSystemPipeline(DataPipeline):
         super().__init__(config)
     
     def run(self):
-        start_date = self.config.start_date
-        end_date = self.config.end_date
+        start_date = self.config.start_date()
+        end_date = self.config.end_date()
         
         # Extract data from energidataservice
         logging.info(f"getting {self.config.datatype}-data for the period {start_date}-{end_date}")

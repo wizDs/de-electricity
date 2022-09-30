@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional
 import pipelines
 import argparse
@@ -30,9 +31,11 @@ def get_args() -> pipelines.Config | None:
 if __name__=="__main__":
     logging.basicConfig(level=logging.INFO)
     config = get_args()
-    if not config.month:
-        for month in range(1, 13):
-            config.month = month
-            run_pipeline(config)
+    if config.month:
+        run_pipeline(config)
 
-    run_pipeline(config)
+    for month in range(1, 13):
+        config.month=month
+        if config.start_date() <= date.today():
+            run_pipeline(config)
+        
