@@ -29,7 +29,6 @@ class DataPipeline:
     def __init__(self, config: Config) -> None:
         self.config = config
    
-
     def persist_data(self, data: pd.DataFrame) -> None:
         path = self.config.get_full_path()
         if not path.exists():
