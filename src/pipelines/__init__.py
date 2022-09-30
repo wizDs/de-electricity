@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 import pandas as pd
 from datetime import date,  timedelta
 from dateutil.relativedelta import relativedelta
@@ -9,7 +10,7 @@ from pydantic import BaseModel
 
 class Config(BaseModel):
     year: int
-    month: int
+    month: Optional[int]
     path: str
     datatype: str
     
@@ -46,14 +47,13 @@ class SpotPricePipeline(DataPipeline):
 
     def __init__(self, config: Config) -> None:
         super().__init__(config)
-        self.pipeline_name = "spotprice"
     
     def run(self):
         start_date = self.config.start_date
         end_date = self.config.end_date
         
         # Extract data from energidataservice
-        logging.info(f"getting {self.pipeline_name}-data for the period {start_date}-{end_date}")
+        logging.info(f"getting {self.config.datatype}-data for the period {start_date}-{end_date}")
         data = electricity.SpotpriceClient().get(start_date, end_date)
         data = pd.DataFrame(row.dict() for row in data)
 
@@ -65,14 +65,13 @@ class PowerSystemPipeline(DataPipeline):
     
     def __init__(self, config: Config) -> None:
         super().__init__(config)
-        self.pipeline_name = "powersystem"
     
     def run(self):
         start_date = self.config.start_date
         end_date = self.config.end_date
         
         # Extract data from energidataservice
-        logging.info(f"getting {self.pipeline_name}-data for the period {start_date}-{end_date}")
+        logging.info(f"getting {self.config.datatype}-data for the period {start_date}-{end_date}")
         data = electricity.PowerSystemClient().get(start_date, end_date)
         data = pd.DataFrame(row.dict() for row in data)
 
