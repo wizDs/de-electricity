@@ -1,5 +1,6 @@
 import pipelines
 import argparse
+import logging
 
 def run_pipeline(config: pipelines.Config) -> None:
 
@@ -26,5 +27,6 @@ def get_args() -> pipelines.Config:
     )
 
 if __name__=="__main__":
+    logging.basicConfig(level=logging.INFO)
     config = get_args()
     run_pipeline(config)

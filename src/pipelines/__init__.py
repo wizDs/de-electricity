@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 from datetime import date,  timedelta
 from dateutil.relativedelta import relativedelta
-import loaders
+import loaders.electricity as electricity
 import pathlib
 import uuid
 from pydantic import BaseModel
@@ -46,14 +46,15 @@ class SpotPricePipeline(DataPipeline):
 
     def __init__(self, config: Config) -> None:
         super().__init__(config)
+        self.pipeline_name = "spotprice"
     
     def run(self):
         start_date = self.config.start_date
         end_date = self.config.end_date
         
         # Extract data from energidataservice
-        logging.info(f"getting data for the period {start_date}-{end_date}")
-        data = loaders.SpotpriceClient().get(start_date, end_date)
+        logging.info(f"getting {self.pipeline_name}-data for the period {start_date}-{end_date}")
+        data = electricity.SpotpriceClient().get(start_date, end_date)
         data = pd.DataFrame(row.dict() for row in data)
 
         # persist data
@@ -64,14 +65,15 @@ class PowerSystemPipeline(DataPipeline):
     
     def __init__(self, config: Config) -> None:
         super().__init__(config)
+        self.pipeline_name = "powersystem"
     
     def run(self):
         start_date = self.config.start_date
         end_date = self.config.end_date
         
         # Extract data from energidataservice
-        logging.info(f"getting data for the period {start_date}-{end_date}")
-        data = loaders.PowerSystemClient().get(start_date, end_date)
+        logging.info(f"getting {self.pipeline_name}-data for the period {start_date}-{end_date}")
+        data = electricity.PowerSystemClient().get(start_date, end_date)
         data = pd.DataFrame(row.dict() for row in data)
 
         # persist data
