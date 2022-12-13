@@ -1,5 +1,6 @@
 from datetime import date
 from typing import Optional
+from enums import PipelineType
 import pipelines
 import argparse
 import logging
@@ -15,9 +16,9 @@ def get_apikey(path: str = "apikey") -> str:
 def run_pipeline(config: pipelines.Config) -> None:
 
     match config.datatype:
-        case "spotprice": pipelines.SpotPricePipeline(config).run()
-        case "powersystem": pipelines.PowerSystemPipeline(config).run()
-        case "weather": raise NotImplementedError("not implemented yet")
+        case PipelineType.SPOTPRICE: pipelines.SpotPricePipeline(config).run()
+        case PipelineType.POWERSYSTEM: pipelines.PowerSystemPipeline(config).run()
+        case PipelineType.WEATHER: raise NotImplementedError("not implemented yet")
         case _: raise Exception("datatype not supported")
 
 
@@ -35,7 +36,7 @@ def get_args() -> pipelines.Config:
         year=args.year, 
         month=args.month, 
         path=args.path,
-        datatype=args.datatype
+        datatype=PipelineType(args.datatype)
     )
 
 if __name__=="__main__":

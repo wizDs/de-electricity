@@ -3,6 +3,7 @@ from typing import Optional
 import pandas as pd
 from datetime import date,  timedelta
 from dateutil.relativedelta import relativedelta
+from enums import PipelineType
 import loaders.electricity as electricity
 import pathlib
 import uuid
@@ -12,7 +13,7 @@ class Config(BaseModel):
     year: int
     month: Optional[int]
     path: str
-    datatype: str
+    datatype: PipelineType
     
     def start_date(self):
         return date(self.year, self.month, 1)
@@ -21,7 +22,7 @@ class Config(BaseModel):
         return self.start_date() + relativedelta(months=+1) - timedelta(days=1)
 
     def get_full_path(self) -> pathlib.Path:
-        full_path = f"{self.path}/{self.datatype}/year={self.year}/month={self.month}/"
+        full_path = f"{self.path}/{self.datatype.value}/year={self.year}/month={self.month}/"
         return pathlib.Path(full_path)
 
 class DataPipeline:
@@ -38,6 +39,9 @@ class DataPipeline:
 
     def run(self):
         raise NotImplementedError()
+    
+    def get(self):
+        raise NotImplementedError()
 
 
 class SpotPricePipeline(DataPipeline):
@@ -46,6 +50,7 @@ class SpotPricePipeline(DataPipeline):
         super().__init__(config)
     
     def run(self):
+
         start_date = self.config.start_date()
         end_date = self.config.end_date()
         
@@ -56,7 +61,7 @@ class SpotPricePipeline(DataPipeline):
 
         # persist data
         self.persist_data(data=data)
-
+        
 
 class PowerSystemPipeline(DataPipeline):
     
@@ -75,4 +80,4 @@ class PowerSystemPipeline(DataPipeline):
         # persist data
         self.persist_data(data=data)
 
-        
+
